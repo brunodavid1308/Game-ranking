@@ -14,6 +14,7 @@ async function loadPlayers(){
     const players=await fetchJSON(`${API_BASE}/get-players`);
     render(players);
   } catch(e){
+    console.error('Error loadPlayers:', e);
     els.players.innerHTML='<p style="color:red">Error cargando jugadores. Revisa la DB.</p>';
     els.loser.textContent='Error al conectar';
   }
@@ -47,43 +48,53 @@ function render(players){
 }
 
 async function updatePoints(name,delta){
-  await fetchJSON(`${API_BASE}/update-players`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name,delta})
-  });
-  await loadPlayers();
+  try {
+    const res = await fetchJSON(`${API_BASE}/update-players`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name, delta})
+    });
+    await loadPlayers();
+  } catch(e){
+    console.error('Error updatePoints:', e);
+  }
 }
 
 async function deletePlayer(name){
-  await fetchJSON(`${API_BASE}/update-players`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({delete:true,name})
-  });
-  await loadPlayers();
+  try{
+    await fetchJSON(`${API_BASE}/update-players`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({delete:true,name})
+    });
+    await loadPlayers();
+  } catch(e){console.error('Error deletePlayer:', e);}
 }
 
 async function addPlayer(){
   const name=els.input.value.trim();
   if(!name) return;
-  await fetchJSON(`${API_BASE}/update-players`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name,delta:0})
-  });
-  els.input.value='';
-  await loadPlayers();
+  try{
+    await fetchJSON(`${API_BASE}/update-players`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,delta:0})
+    });
+    els.input.value='';
+    await loadPlayers();
+  } catch(e){console.error('Error addPlayer:', e);}
 }
 
 async function resetAll(){
   if(!confirm('¿Resetear todos los puntos a 0?')) return;
-  await fetchJSON(`${API_BASE}/update-players`,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({reset:true})
-  });
-  await loadPlayers();
+  try{
+    await fetchJSON(`${API_BASE}/update-players`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({reset:true})
+    });
+    await loadPlayers();
+  } catch(e){console.error('Error resetAll:', e);}
 }
 
 els.add.addEventListener('click',addPlayer);
