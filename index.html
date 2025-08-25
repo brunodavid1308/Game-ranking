@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contador de Juegos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Contador de Juegos</h1>
+    <p class="subtitle">Ranking global — Gana quien tenga <strong>menos</strong> puntos</p>
+  </header>
+
+  <main>
+    <section class="status">
+      <div id="loserBadge" class="badge">Cargando…</div>
+      <button id="resetBtn" class="ghost">Resetear semana</button>
+    </section>
+
+    <section class="add-player">
+      <input id="newPlayer" type="text" placeholder="Nombre del jugador" />
+      <button id="addBtn">Añadir jugador</button>
+    </section>
+
+    <section id="players" class="players"></section>
+  </main>
+
+  <footer>
+    <small>Hecho para jugar rápido desde el móvil 🕹️</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
